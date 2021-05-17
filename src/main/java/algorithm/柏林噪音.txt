@@ -1,0 +1,38 @@
+准备梯度索引表p， 梯度表t
+
+-- 一维柏林噪音
+1. 输入的值为x
+2. 根据该值取得该值的两个相邻点 x1 = floor(x), x2 = floor(x) + 1
+3. 将x1, x2值哈希化，得到梯度索引表的索引 p-idx
+4. 根据上一步的索引获得梯队表的索引 t-idx
+5. 根据t-idx  获得梯度值 t1, t2
+6. 根据输入的值 x 和相邻的值 x1， x2 计算出方向向量 offX1 = x - x1, offX2 = x - x2
+7. 计算出方向向量 offX1 offX2 和 梯度值 t1 t2各自的结果乘积 result1 result2
+8. 根据x 到 x1的距离计算出平滑参数t = 3 * offX1平方 - 2 * offX1三次方        【3t² - 2t³， 】
+9. 根据结果乘积和平滑参数计算出最中结果 result = (1 - t) * offX1 + t * offX2 
+
+-- 二维柏林噪音
+1. 输入的值为p(x,y) 
+2. 根据该值取得该值的四个相邻点 
+    p1 = (floor(x), floor(y)), 
+    p2 = (floor(x)  + 1, floor(y)), 
+    p3 = (floor(x), floor(y)  + 1), 
+    p4 = (floor(x) + 1, floor(y)  + 1)
+3. 将p1, p2, p3, p4的x，y值哈希化，得到梯度索引表的索引 p-idx
+4. 根据上一步的索引获得梯队表的索引 t-idx
+5. 根据t-idx  获得梯度值 t1, t2， t3, t4
+6. 根据输入的值 p 和相邻的值 p1， p2, p3, p4 计算出方向向量
+    offP1 = (x - x1, y - y1)
+    offP2 = (x - x2, y - y2)
+    offP3 = (x - x3, y - y3)
+    offP4 = (x - x4, y - y4) 
+7. 计算出方向向量 offP1 offP2 offP3 offP4 和 梯度值 t1 t2 t3 t4各自的结果乘积 
+    result1 result2 result3 result4
+8. 根据x 到 x1的距离计算出平滑参数 offX = p.x - p1.x
+    t1 = 6.0 * pow(offX, 5.0) - 15.0 * pow(offX, 4.0) + 10.0 * pow(offX, 3.0);
+9. 计算出有四个结果插值出来的最终插值   
+    tmp1 = result1 * (1-t1) + result2 * t1
+    tmp2 = result3 * (1-t1) + result4 * t1
+    result = tmp1 * (1 - t1) + tmp2 * t
+
+-- 三维柏林噪音

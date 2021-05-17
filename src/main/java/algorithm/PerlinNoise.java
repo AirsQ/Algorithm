@@ -1,5 +1,8 @@
 package algorithm;
 
+import com.sun.javafx.geom.Vec2d;
+import com.sun.javafx.geom.Vec3d;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
@@ -89,5 +92,10 @@ public class PerlinNoise {
         return value * value * value * (value * (value * 6 - 15) + 10);
     }
 
+    private  static  Vec2d g2[] = {
+            new Vec2d(0, 1),
+
+
+    };
 
 }
